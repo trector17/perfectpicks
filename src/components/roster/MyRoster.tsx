@@ -3,18 +3,8 @@ import { useDraftStore, selectTeamPicks } from '../../stores/draftStore.ts'
 import { useLeagueStore } from '../../stores/leagueStore.ts'
 import { usePlayerStore, selectPlayerById } from '../../stores/playerStore.ts'
 import { calculateFantasyPoints } from '../../engine/scoring.ts'
+import { POSITION_COLORS } from '../../constants/positions.ts'
 import type { RosterSlot } from '../../types/index.ts'
-
-const POSITION_COLORS: Record<string, string> = {
-  QB: 'text-red-400',
-  RB: 'text-green-400',
-  WR: 'text-blue-400',
-  TE: 'text-orange-400',
-  K: 'text-purple-400',
-  DST: 'text-yellow-400',
-  FLEX: 'text-pink-400',
-  BENCH: 'text-gray-500',
-}
 
 export function MyRoster() {
   const picks = useDraftStore(s => s.picks)

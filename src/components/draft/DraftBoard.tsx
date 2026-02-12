@@ -1,18 +1,9 @@
 import { useDraftStore } from '../../stores/draftStore.ts'
 import { useLeagueStore } from '../../stores/leagueStore.ts'
-import { usePlayerStore } from '../../stores/playerStore.ts'
+import { usePlayerStore, selectPlayerById } from '../../stores/playerStore.ts'
 import { totalRosterSize } from '../../types/index.ts'
-import { selectPlayerById } from '../../stores/playerStore.ts'
 import { getTeamForPick } from '../../utils/draftOrder.ts'
-
-const POSITION_COLORS: Record<string, string> = {
-  QB: 'bg-red-900/60 text-red-300',
-  RB: 'bg-green-900/60 text-green-300',
-  WR: 'bg-blue-900/60 text-blue-300',
-  TE: 'bg-orange-900/60 text-orange-300',
-  K: 'bg-purple-900/60 text-purple-300',
-  DST: 'bg-yellow-900/60 text-yellow-300',
-}
+import { POSITION_BADGES } from '../../constants/positions.ts'
 
 export function DraftBoard() {
   const picks = useDraftStore(s => s.picks)
@@ -70,7 +61,7 @@ export function DraftBoard() {
                   >
                     {player ? (
                       <div
-                        className={`rounded px-1 py-0.5 ${POSITION_COLORS[player.position] ?? ''}`}
+                        className={`rounded px-1 py-0.5 ${POSITION_BADGES[player.position] ?? ''}`}
                       >
                         <div className="truncate font-medium">{player.name.split(' ').pop()}</div>
                         <div className="text-[10px] opacity-70">{player.position}</div>
