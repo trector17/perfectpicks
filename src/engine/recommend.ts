@@ -61,19 +61,20 @@ function generateReasons(
 /**
  * Core recommendation engine.
  * Takes the full draft context and returns ranked recommendations.
+ * @param forTeamIndex - Optional team index to get recommendations for (defaults to user's team)
  */
-export function getRecommendations(input: EngineInput, count: number = 10): Recommendation[] {
+export function getRecommendations(input: EngineInput, count: number = 10, forTeamIndex?: number): Recommendation[] {
   const { players, picks, leagueConfig, currentOverall } = input
   const { teamCount, rosterSlots, scoringConfig, draftPosition } = leagueConfig
   const rosterSize = totalRosterSize(rosterSlots)
   const totalRounds = rosterSize
   const currentRound = Math.ceil(currentOverall / teamCount)
 
-  // User's team index is draftPosition - 1 (0-indexed)
-  const userTeamIndex = draftPosition - 1
+  // Use provided team index or default to user's team
+  const teamIndex = forTeamIndex ?? (draftPosition - 1)
 
-  // Get user's existing picks
-  const userPicks = selectTeamPicks(picks, userTeamIndex)
+  // Get team's existing picks
+  const teamPicks = selectTeamPicks(picks, teamIndex)
 
   // Available players (not yet drafted)
   const draftedIds = new Set(picks.map(p => p.playerId))
@@ -94,7 +95,7 @@ export function getRecommendations(input: EngineInput, count: number = 10): Reco
   const scarcityScoresRaw = available.map(p => getScarcityForPosition(scarcities, p.position))
 
   // Signal 3: Roster need
-  const needs = analyzeNeeds(userPicks, players, rosterSlots, totalRounds, currentRound)
+  const needs = analyzeNeeds(teamPicks, players, rosterSlots, totalRounds, currentRound)
   const needScoresRaw = available.map(p => getNeedForPosition(needs, p.position))
 
   // Signal 4: ADP value

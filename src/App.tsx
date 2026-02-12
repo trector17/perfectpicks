@@ -8,6 +8,7 @@ import { RecommendationPanel } from './components/recommendations/Recommendation
 import { MyRoster } from './components/roster/MyRoster.tsx'
 import { Toast } from './components/ui/Toast.tsx'
 import { useUIStore } from './stores/uiStore.ts'
+import { useBotPicks } from './hooks/useBotPicks.ts'
 
 function MobileContent() {
   const mobileTab = useUIStore(s => s.mobileTab)
@@ -51,9 +52,11 @@ function DesktopContent() {
 }
 
 function DraftView() {
+  const { isBotPicking } = useBotPicks()
+
   return (
     <div className="flex h-[calc(100vh-64px)] flex-col">
-      <DraftControls />
+      <DraftControls isBotPicking={isBotPicking} />
       {/* Desktop: 3-column layout */}
       <div className="hidden flex-1 overflow-hidden lg:flex">
         <DesktopContent />

@@ -3,7 +3,11 @@ import { useLeagueStore } from '../../stores/leagueStore.ts'
 import { totalRosterSize } from '../../types/index.ts'
 import { getTeamForPick } from '../../utils/draftOrder.ts'
 
-export function DraftControls() {
+interface DraftControlsProps {
+  isBotPicking?: boolean
+}
+
+export function DraftControls({ isBotPicking = false }: DraftControlsProps) {
   const picks = useDraftStore(s => s.picks)
   const undoPick = useDraftStore(s => s.undoPick)
   const config = useLeagueStore(s => s.config)
@@ -42,6 +46,11 @@ export function DraftControls() {
           ) : isUserPick ? (
             <span className="animate-pulse rounded bg-green-600 px-1.5 py-0.5 text-xs font-semibold text-white shadow-lg shadow-green-600/50 sm:px-2 sm:text-sm">
               YOUR PICK
+            </span>
+          ) : isBotPicking ? (
+            <span className="flex items-center gap-1.5 rounded bg-yellow-600/80 px-1.5 py-0.5 text-xs font-semibold text-white sm:px-2 sm:text-sm">
+              <span className="inline-block h-2 w-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              Team {currentTeam + 1} picking...
             </span>
           ) : (
             <span className="text-xs text-gray-300 sm:text-sm">Team {currentTeam + 1}</span>
